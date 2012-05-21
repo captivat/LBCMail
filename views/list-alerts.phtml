@@ -1,0 +1,33 @@
+<a href="?a=form">Ajouter une alerte</a>
+<table>
+    <thead>
+        <tr>
+            <th>E-Mail</th>
+            <th>Titre</th>
+            <th>URL</th>
+            <th>Intervalle</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php if (0 == count($config)) : ?>
+        <tr>
+            <td colspan="4">Aucune alertes créées.</td>
+        </tr>
+    <?php else: ?>
+        <?php foreach ($config AS $alert) : ?>
+        <tr>
+            <td><?php echo htmlspecialchars($alert["email"]); ?></td>
+            <td><?php echo htmlspecialchars($alert["title"]); ?></td>
+            <td>
+                <a href="<?php echo htmlspecialchars($alert["url"]); ?>"><?php
+                    echo str_replace("http://www.leboncoin.fr", "", htmlspecialchars($alert["url"])); ?></a>
+            </td>
+            <td><?php echo (int)$alert["interval"]; ?> mins</td>
+            <td>
+                <a href="?a=form-delete&amp;id=<?php echo $alert["id"]; ?>">supprimer</a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    </tbody>
+</table>

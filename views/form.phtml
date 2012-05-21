@@ -1,0 +1,80 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $alert = array_merge(array("email" => "", "title" => "",
+        "url" => "", "interval" => 30), $_POST);
+    $alert["interval"] = (int)$alert["interval"];
+    if (empty($alert["email"])) {
+        $errors["email"] = "Ce champ est obligatoire.";
+    }
+    if (empty($alert["url"])) {
+        $errors["url"] = "Ce champ est obligatoire.";
+    }
+    try {
+        $alert["url"] = Lbc::formatUrl($alert["url"]);
+    } catch (Exception $e) {
+        $errors["url"] = "Cette adresse ne semble pas valide.";
+    }
+    if (empty($alert["interval"])) {
+        $errors["interval"] = "Ce champ est obligatoire.";
+    }
+    if (empty($errors)) {
+        $alert["id"] = md5(uniqid());
+        $config[] = $alert;
+        ConfigManager::save($config);
+        header("LOCATION: ./"); exit;
+    }
+}
+?>
+<form action="" method="post">
+    <fieldset>
+        <legend>Ajouter une alerte</legend>
+        <dl>
+            <dt>
+                <label for="email">E-Mail</label>
+            </dt>
+            <dd>
+                <input type="text" id="email" name="email" value="<?php
+                    echo isset($alert["email"])?htmlspecialchars($alert["email"]):"";
+                ?>" size="30" />
+                <?php if (isset($errors["email"])) : ?>
+                <p class="error"><?php echo $errors["email"]; ?></p>
+                <?php endif; ?>
+            </dd>
+            <dt>
+                <label for="title">Titre</label>
+            </dt>
+            <dd>
+                <input type="text" id="title" name="title" value="<?php
+                    echo isset($alert["title"])?htmlspecialchars($alert["title"]):"";
+                ?>" />
+                <?php if (isset($errors["title"])) : ?>
+                <p class="error"><?php echo $errors["title"]; ?></p>
+                <?php endif; ?>
+            </dd>
+            <dt>
+                <label for="url">URL de recherche Leboncoin</label>
+            </dt>
+            <dd>
+                <input type="text" id="url" name="url" value="<?php
+                    echo isset($alert["url"])?htmlspecialchars($alert["url"]):"";
+                ?>" size="50" />
+                <?php if (isset($errors["url"])) : ?>
+                <p class="error"><?php echo $errors["url"]; ?></p>
+                <?php endif; ?>
+            </dd>
+            <dt>
+                <label for="interval">Intervalle de contrôle d'alerte (en minute)</label>
+            </dt>
+            <dd>
+                <input type="text" id="interval" name="interval" value="<?php
+                    echo isset($alert["interval"])?(int)$alert["interval"]:30;
+                ?>" size="10" />
+                <?php if (isset($errors["interval"])) : ?>
+                <p class="error"><?php echo $errors["interval"]; ?></p>
+                <?php endif; ?>
+            </dd>
+            <dt>&nbsp;</dt>
+            <dd><input type="submit" value="Enregistrer" /></dd>
+        </dl>
+    </fieldset>
+</form>

@@ -1,0 +1,35 @@
+<?php
+if (!isset($_GET["id"]) || empty($config)) {
+    header("LOCATION: ./"); exit;
+}
+foreach ($config AS $alert) {
+    if ($alert["id"] == $_GET["id"]) {
+        break;
+    }
+}
+if ($alert["id"] != $_GET["id"]) {
+    header("LOCATION: ./"); exit;
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST["id"]) && $_POST["id"] == $_GET["id"]) {
+        $newConfig = array();
+        foreach ($config AS $alert) {
+            if ($alert["id"] != $_GET["id"]) {
+                $newConfig[] = $alert;
+            }
+        }
+        ConfigManager::save($newConfig);
+    }
+    header("LOCATION: ./"); exit;
+}
+?>
+<form action="" method="post">
+    <fieldset>
+        <legend>Supprimer cet alerte ?</legend>
+        <p>
+            <input type="hidden" name="id" value="<?php echo $_GET["id"]; ?>" />
+            <input type="submit" value="Oui" style="font-weight: bold;" />
+            <a href="./">Non</a>
+        </p>
+    </fieldset>
+</form>
