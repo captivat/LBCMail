@@ -28,6 +28,15 @@ Rendez-vous à l'adresse de l'application. Vous pouvez ajouter votre première a
 * **Url de recherche** : c'est l'adresse Leboncoin correspondant à votre recherche. 
 * **Intervalle de contrôle d'alerte** : l'alerte sera contrôle par le script toutes les X minutes. 
 
+Maintenant, il faut définir une tâche cron. Deux solutions s'offrent à vous :
+
+* appeler directement le fichier "check.php" en CLI :
+`*/5 * * * * php -f /path/to/your/web/directory/check.php`
+* ou appeler "check.php" via l'adresse de votre site. Exemple : http://exemple.com/alerte/check.php
+
+Pour le second point, vous pouvez utiliser un service en ligne appelé webcron (voir dans un moteur de recherche).
+
+
 ## Pour finir
 
 Surveillez bien les mises à jour de l'application. Lorsque Leboncoin effectue des modifications sur leur site, l'application risque de ne plus fonctionner. En général, j'applique un correctif dès que je suis mis au courant.
