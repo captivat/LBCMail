@@ -288,11 +288,16 @@ class Lbc_Parser
             }
             $ad = new Lbc_Ad();
             $ad->setProfessionnal(false)->setUrgent(false);
-            $aTags = $result->getElementsByTagName("a");
-            if (!$aTags->length) {
-                continue;
+            $parent = $result->parentNode;
+            if ($parent->tagName == "a") {
+                $a = $parent;
+            } else {
+                $aTags = $result->getElementsByTagName("a");
+                if (!$aTags->length) {
+                    continue;
+                }
+                $a = $aTags->item(0);
             }
-            $a = $aTags->item(0);
             if (!preg_match('/([0-9]+)\.htm.*/', $a->getAttribute("href"), $m)) {
                 continue;
             }
