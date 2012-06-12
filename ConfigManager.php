@@ -1,5 +1,35 @@
 <?php
 
+class Alert {
+    public $email;
+    public $id;
+    public $title;
+    public $url;
+    public $interval = 30;
+    public $time_last_ad = 0;
+    public $time_updated = 0;
+
+    public function fromArray(array $values)
+    {
+        foreach ($values AS $key => $value) {
+            $this->$key = $value;
+        }
+    }
+
+    public function toArray()
+    {
+        return array(
+            "email" => $this->email,
+            "id" => $this->id,
+            "title" => $this->title,
+            "url" => $this->url,
+            "interval" => $this->interval,
+            "time_last_ad" => $this->time_last_ad,
+            "time_updated" => $this->time_updated
+        );
+    }
+}
+
 class ConfigManager
 {
     public static function getConfigFile()
@@ -19,9 +49,11 @@ class ConfigManager
         $nb = count($header);
         $config = array();
         while (false !== $a = fgetcsv($fp, 0, ",", '"')) {
-            $alert = array();
+            $alert = new Alert();
             for ($i = 0; $i < $nb; $i++) {
-                $alert[$header[$i]] = $a[$i];
+                if (isset($a[$i])) {
+                    $alert->$header[$i] = $a[$i];
+                }
             }
             $config[] = $alert;
         }
@@ -45,9 +77,10 @@ class ConfigManager
         }
         $fp = fopen($filename, "w");
         if ($config && is_array($config)) {
-            fputcsv($fp, array_keys($config[0]), ",", '"');
-            foreach ($config AS $i => $alert) {
-                fputcsv($fp, array_values($alert), ",", '"');
+            $keys = array_keys($config[0]->toArray());
+            fputcsv($fp, $keys, ",", '"');
+            foreach ($config AS $alert) {
+                fputcsv($fp, array_values($alert->toArray()), ",", '"');
             }
         }
         fclose($fp);

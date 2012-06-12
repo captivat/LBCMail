@@ -1,3 +1,10 @@
+## Version 1.2 - 09/06/2012
+
+ * amélioration : création d'un objet "Alert" plus simple à gérer.
+ * correction : problème avec les dates (fuseau horaire notemment).
+ * correction : erreur lors de l'enregistrement d'une alerte avec données manquantes.
+
+
 ## Version 1.1 - 31/05/2012
 
  * mise à jour du parser (changement sur Leboncoin).

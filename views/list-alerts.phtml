@@ -16,15 +16,15 @@
     <?php else: ?>
         <?php foreach ($config AS $alert) : ?>
         <tr>
-            <td><?php echo htmlspecialchars($alert["email"]); ?></td>
-            <td><?php echo htmlspecialchars($alert["title"]); ?></td>
+            <td><?php echo htmlspecialchars($alert->email); ?></td>
+            <td><?php echo htmlspecialchars($alert->title); ?></td>
             <td>
-                <a href="<?php echo htmlspecialchars($alert["url"]); ?>"><?php
-                    echo str_replace("http://www.leboncoin.fr", "", htmlspecialchars($alert["url"])); ?></a>
+                <a href="<?php echo htmlspecialchars($alert->url); ?>"><?php
+                    echo str_replace("http://www.leboncoin.fr", "", htmlspecialchars($alert->url)); ?></a>
             </td>
-            <td><?php echo (int)$alert["interval"]; ?> mins</td>
+            <td><?php echo (int)$alert->interval; ?> mins</td>
             <td>
-                <a href="?a=form-delete&amp;id=<?php echo $alert["id"]; ?>">supprimer</a>
+                <a href="?a=form-delete&amp;id=<?php echo $alert->id; ?>">supprimer</a>
             </td>
         </tr>
         <?php endforeach; ?>

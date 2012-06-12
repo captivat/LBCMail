@@ -19,7 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if (empty($errors)) {
         $alert["id"] = md5(uniqid());
-        $config[] = $alert;
+        $iAlert = new Alert();
+        $iAlert->fromArray($alert);
+        $config[] = $iAlert;
         ConfigManager::save($config);
         header("LOCATION: ./"); exit;
     }
